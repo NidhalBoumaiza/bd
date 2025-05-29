@@ -105,9 +105,6 @@
         padding: 2rem;
         z-index: 2;
         position: relative;
-        overflow: hidden;
-        max-width: 300px;
-        margin: 0 auto;
         animation: fadeInUp 1s ease-out;
       }
 
@@ -118,7 +115,6 @@
         transform: rotate(-3deg);
         transition: 0.3s;
         width: 250px;
-        min-width: 250px;
         opacity: 0;
         animation: slideInFromRight 0.8s ease-out forwards;
         animation-delay: calc(var(--delay) * 0.3s);
@@ -262,17 +258,6 @@
         }
       }
 
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(50px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
       @keyframes typewriter {
         from {
           width: 0;
@@ -343,7 +328,7 @@
       /* Enhanced Summer Scenes */
       .summer-scenes {
         display: flex;
-        overflow-x: auto;
+        overflow: hidden;
         gap: 1rem;
         padding: 1rem;
         z-index: 2;
@@ -353,32 +338,69 @@
         animation-delay: 2s;
         opacity: 0;
         animation-fill-mode: forwards;
+        max-width: 600px;
+        margin: 0 auto;
+        height: 250px;
+        align-items: center;
+      }
+
+      .summer-slide {
+        display: none;
+        animation: slideInSummer 0.8s ease-in-out;
+      }
+
+      .summer-slide.active {
+        display: block;
       }
 
       .summer-scenes img {
         height: 200px;
+        width: 100%;
+        max-width: 500px;
         border-radius: 10px;
         border: 2px solid rgba(162, 210, 255, 0.5);
         transition: transform 0.3s ease;
-        animation: slideInFromRight 0.8s ease-out forwards;
-        animation-delay: calc(var(--img-delay) * 0.2s + 2s);
-      }
-
-      .summer-scenes img:nth-child(1) {
-        --img-delay: 1;
-      }
-      .summer-scenes img:nth-child(2) {
-        --img-delay: 2;
-      }
-      .summer-scenes img:nth-child(3) {
-        --img-delay: 3;
-      }
-      .summer-scenes img:nth-child(4) {
-        --img-delay: 4;
+        object-fit: cover;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
 
       .summer-scenes img:hover {
-        transform: scale(1.1) rotate(2deg);
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Summer slideshow indicators */
+      .summer-dots {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .summer-dot {
+        height: 12px;
+        width: 12px;
+        margin: 0 4px;
+        background-color: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .summer-dot.active,
+      .summer-dot:hover {
+        background-color: #a2d2ff;
+        transform: scale(1.3);
+      }
+
+      @keyframes slideInSummer {
+        from {
+          opacity: 0;
+          transform: translateX(100px) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
       }
 
       /* Enhanced Message */
@@ -424,45 +446,26 @@
     </div>
 
     <!-- Photo Gallery -->
-    <div class="slideshow-container">
-      <div class="slides active">
-        <div class="polaroid">
-          <img
-            src="Messenger_creation_01F7B8C7-9CC7-4E64-AC3D-6D831C3EEBC2.jpeg"
-            alt="Photo 1"
-          />
-          <p>Our favorite memory ❤️</p>
-        </div>
+    <div class="gallery">
+      <div class="polaroid">
+        <img
+          src="Messenger_creation_01F7B8C7-9CC7-4E64-AC3D-6D831C3EEBC2.jpeg"
+          alt="Photo 1"
+        />
+        <p>Our favorite memory ❤️</p>
       </div>
 
-      <div class="slides">
-        <div class="polaroid">
-          <img src="nn.jpeg.jpeg" alt="Photo 2" />
-          <p>Your perfect smile ✨</p>
-        </div>
+      <div class="polaroid">
+        <img src="nn.jpeg.jpeg" alt="Photo 2" />
+        <p>Your perfect smile ✨</p>
       </div>
 
-      <div class="slides">
-        <div class="polaroid">
-          <img
-            src="7106a03c-9d1e-4472-9846-c0dd26e52269.jpeg"
-            alt="Photo 3"
-          />
-          <p>Best hair cut</p>
-        </div>
-      </div>
-
-      <!-- Navigation buttons -->
-      <button class="nav-btn prev" onclick="changeSlide(-1)">
-        ❮
-      </button>
-      <button class="nav-btn next" onclick="changeSlide(1)">❯</button>
-
-      <!-- Dots indicator -->
-      <div class="dots-container">
-        <span class="dot active" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
+      <div class="polaroid">
+        <img
+          src="7106a03c-9d1e-4472-9846-c0dd26e52269.jpeg"
+          alt="Photo 3"
+        />
+        <p>Best hair cut</p>
       </div>
     </div>
 
@@ -497,22 +500,41 @@
 
     <!-- Summer Vibes -->
     <div class="summer-scenes">
-      <img
-        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-        alt="Beach"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-        alt="Ocean"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-        alt="Palm Trees"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1510784722466-f2aa9c52fff6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-        alt="Sunset"
-      />
+      <div class="summer-slide active">
+        <img
+          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          alt="Beach"
+        />
+      </div>
+      <div class="summer-slide">
+        <img
+          src="https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          alt="Ocean"
+        />
+      </div>
+      <div class="summer-slide">
+        <img
+          src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          alt="Palm Trees"
+        />
+      </div>
+      <div class="summer-slide">
+        <img
+          src="https://images.unsplash.com/photo-1510784722466-f2aa9c52fff6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+          alt="Sunset"
+        />
+      </div>
+    </div>
+
+    <!-- Summer slideshow dots -->
+    <div class="summer-dots">
+      <span
+        class="summer-dot active"
+        onclick="currentSummerSlide(1)"
+      ></span>
+      <span class="summer-dot" onclick="currentSummerSlide(2)"></span>
+      <span class="summer-dot" onclick="currentSummerSlide(3)"></span>
+      <span class="summer-dot" onclick="currentSummerSlide(4)"></span>
     </div>
 
     <!-- Message -->
@@ -597,14 +619,12 @@
         clearInterval(slideInterval);
         slideIndex += n;
         showSlide(slideIndex);
-        startAutoSlide();
       }
 
       function currentSlide(n) {
         clearInterval(slideInterval);
         slideIndex = n;
         showSlide(slideIndex);
-        startAutoSlide();
       }
 
       function nextSlide() {
@@ -618,6 +638,54 @@
 
       // Start automatic slideshow
       startAutoSlide();
+
+      // Summer scenes slideshow functionality
+      let summerSlideIndex = 1;
+      let summerSlideInterval;
+
+      function showSummerSlide(n) {
+        const summerSlides =
+          document.getElementsByClassName("summer-slide");
+        const summerDots =
+          document.getElementsByClassName("summer-dot");
+
+        if (n > summerSlides.length) {
+          summerSlideIndex = 1;
+        }
+        if (n < 1) {
+          summerSlideIndex = summerSlides.length;
+        }
+
+        for (let i = 0; i < summerSlides.length; i++) {
+          summerSlides[i].classList.remove("active");
+        }
+
+        for (let i = 0; i < summerDots.length; i++) {
+          summerDots[i].classList.remove("active");
+        }
+
+        summerSlides[summerSlideIndex - 1].classList.add("active");
+        summerDots[summerSlideIndex - 1].classList.add("active");
+      }
+
+      function currentSummerSlide(n) {
+        clearInterval(summerSlideInterval);
+        summerSlideIndex = n;
+        showSummerSlide(summerSlideIndex);
+        startSummerAutoSlide();
+      }
+
+      function nextSummerSlide() {
+        summerSlideIndex++;
+        showSummerSlide(summerSlideIndex);
+      }
+
+      function startSummerAutoSlide() {
+        summerSlideInterval = setInterval(nextSummerSlide, 3000); // Change slide every 3 seconds
+      }
+
+      // Start summer automatic slideshow
+      startSummerAutoSlide();
 
       // Add smooth scroll behavior for better UX
       document.documentElement.style.scrollBehavior = "smooth";
