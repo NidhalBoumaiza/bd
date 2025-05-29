@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Happy Birthday! 🌟</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* ---- BALLOON & STAR BACKGROUND ---- */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(to bottom, #de38e3, #1f61d2);
+        color: white;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      /* Balloons */
+      .balloon {
+        position: absolute;
+        width: 60px;
+        height: 80px;
+        border-radius: 50%;
+        animation: float 8s infinite linear;
+        z-index: 1;
+      }
+
+      .balloon:before {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        width: 2px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+        }
+      }
+
+      /* Twinkling Stars */
+      .star {
+        position: absolute;
+        background: white;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        animation: twinkle 3s infinite alternate;
+      }
+
+      @keyframes twinkle {
+        0% {
+          opacity: 0.2;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        padding: 5rem 1rem;
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 1.2s ease-out;
+      }
+
+      h1 {
+        font-size: 4rem;
+        margin: 0;
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        animation: pulse 2s infinite;
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        color: #a2d2ff;
+        animation: bounce 2s infinite;
+        animation-delay: 0.5s;
+      }
+
+      /* Polaroid Photo Gallery */
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        z-index: 2;
+        position: relative;
+        overflow: hidden;
+        max-width: 300px;
+        margin: 0 auto;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .polaroid {
+        background: white;
+        padding: 15px 15px 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: rotate(-3deg);
+        transition: 0.3s;
+        width: 250px;
+        min-width: 250px;
+        opacity: 0;
+        animation: slideInFromRight 0.8s ease-out forwards;
+        animation-delay: calc(var(--delay) * 0.3s);
+      }
+
+      .polaroid:nth-child(1) {
+        --delay: 1;
+      }
+      .polaroid:nth-child(2) {
+        --delay: 2;
+      }
+      .polaroid:nth-child(3) {
+        --delay: 3;
+      }
+
+      .polaroid:nth-child(even) {
+        transform: rotate(2deg);
+      }
+      .polaroid:hover {
+        transform: scale(1.05) rotate(0deg);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .polaroid img {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+      }
+
+      .polaroid:hover img {
+        transform: scale(1.02);
+      }
+
+      .polaroid p {
+        margin: 10px 0 0;
+        color: #555;
+        font-style: italic;
+        animation: typewriter 2s steps(20) forwards;
+        animation-delay: calc(var(--delay) * 0.3s + 0.5s);
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid #555;
+        width: 0;
+      }
+
+      /* Slideshow Container */
+      .slideshow-container {
+        position: relative;
+        max-width: 300px;
+        margin: 2rem auto;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .slides {
+        display: none;
+        animation: slideIn 0.5s ease-in-out;
+      }
+
+      .slides.active {
+        display: block;
+      }
+
+      .slides .polaroid {
+        opacity: 1;
+        animation: none;
+        margin: 0 auto;
+      }
+
+      /* Navigation buttons */
+      .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .prev {
+        left: -50px;
+      }
+
+      .next {
+        right: -50px;
+      }
+
+      /* Dots indicator */
+      .dots-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .dot {
+        height: 15px;
+        width: 15px;
+        margin: 0 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .dot.active,
+      .dot:hover {
+        background-color: #ffd700;
+        transform: scale(1.2);
+      }
+
+      /* Enhanced Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(100px) rotate(-10deg);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) rotate(-3deg);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes typewriter {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Enhanced Video Container */
+      .video-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 3rem auto;
+        max-width: 800px;
+        z-index: 2;
+        position: relative;
+        border: 1px solid rgba(162, 210, 255, 0.3);
+        animation: fadeInUp 1s ease-out;
+        animation-delay: 1s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      /* Enhanced Playlist */
+      .playlist {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 3rem auto;
+        max-width: 800px;
+        z-index: 2;
+        position: relative;
+        animation: fadeInUp 1s ease-out;
+        animation-delay: 1.5s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      /* Enhanced Summer Scenes */
+      .summer-scenes {
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding: 1rem;
+        z-index: 2;
+        position: relative;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out;
+        animation-delay: 2s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      .summer-scenes img {
+        height: 200px;
+        border-radius: 10px;
+        border: 2px solid rgba(162, 210, 255, 0.5);
+        transition: transform 0.3s ease;
+        animation: slideInFromRight 0.8s ease-out forwards;
+        animation-delay: calc(var(--img-delay) * 0.2s + 2s);
+      }
+
+      .summer-scenes img:nth-child(1) {
+        --img-delay: 1;
+      }
+      .summer-scenes img:nth-child(2) {
+        --img-delay: 2;
+      }
+      .summer-scenes img:nth-child(3) {
+        --img-delay: 3;
+      }
+      .summer-scenes img:nth-child(4) {
+        --img-delay: 4;
+      }
+
+      .summer-scenes img:hover {
+        transform: scale(1.1) rotate(2deg);
+      }
+
+      /* Enhanced Message */
+      .message {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border-radius: 15px;
+        padding: 3rem;
+        margin: 3rem auto;
+        max-width: 800px;
+        z-index: 2;
+        position: relative;
+        animation: fadeInUp 1s ease-out;
+        animation-delay: 2.5s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.5rem;
+        }
+        .polaroid {
+          width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Balloons -->
+    <div id="balloons-container"></div>
+
+    <!-- Stars -->
+    <div id="stars-container"></div>
+
+    <!-- YouTube Player (hidden) -->
+    <div id="youtube-player"></div>
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Happy Birthday!</h1>
+      <p class="subtitle">To the most amazing man in the world 🌊</p>
+    </div>
+
+    <!-- Photo Gallery -->
+    <div class="slideshow-container">
+      <div class="slides active">
+        <div class="polaroid">
+          <img
+            src="Messenger_creation_01F7B8C7-9CC7-4E64-AC3D-6D831C3EEBC2.jpeg"
+            alt="Photo 1"
+          />
+          <p>Our favorite memory ❤️</p>
+        </div>
+      </div>
+
+      <div class="slides">
+        <div class="polaroid">
+          <img src="nn.jpeg.jpeg" alt="Photo 2" />
+          <p>Your perfect smile ✨</p>
+        </div>
+      </div>
+
+      <div class="slides">
+        <div class="polaroid">
+          <img
+            src="7106a03c-9d1e-4472-9846-c0dd26e52269.jpeg"
+            alt="Photo 3"
+          />
+          <p>Best hair cut</p>
+        </div>
+      </div>
+
+      <!-- Navigation buttons -->
+      <button class="nav-btn prev" onclick="changeSlide(-1)">
+        ❮
+      </button>
+      <button class="nav-btn next" onclick="changeSlide(1)">❯</button>
+
+      <!-- Dots indicator -->
+      <div class="dots-container">
+        <span class="dot active" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="video-container">
+      <h2>A Special Gift for You 🎁</h2>
+
+      <div style="margin: 1rem auto; max-width: 600px">
+        <iframe
+          width="100%"
+          height="315"
+          src="https://www.youtube.com/embed/89degLrNZM8"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- Playlist -->
+    <div class="playlist">
+      <h2>Your Favorite Songs 🎶</h2>
+      <p>Songs that remind me of you</p>
+      <iframe
+        style="border-radius: 12px"
+        src="https://open.spotify.com/embed/playlist/7tDp734ZG2roxQsTq0UgY2?si=7de51550e25a49c0"
+        width="100%"
+        height="380"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <!-- Summer Vibes -->
+    <div class="summer-scenes">
+      <img
+        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        alt="Beach"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        alt="Ocean"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        alt="Palm Trees"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1510784722466-f2aa9c52fff6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+        alt="Sunset"
+      />
+    </div>
+
+    <!-- Message -->
+    <div class="message">
+      <h2>To My Love 💙</h2>
+      <p style="font-size: 1.2rem; line-height: 1.6">
+        Happy birthday to the man who makes every day feel like
+        summer.<br />
+        Your love is my favorite adventure.<br />
+        I can't wait to celebrate many more birthdays with you.<br /><br />
+        Forever yours,<br />
+        <strong>Nidhal Bmz</strong>
+      </p>
+    </div>
+
+    <script>
+      // Create balloons
+      const balloonsContainer = document.getElementById(
+        "balloons-container"
+      );
+      const colors = [
+        "#A2D2FF",
+        "#B8C0FF",
+        "#CDB4DB",
+        "#E2C2FF",
+        "#BDE0FE",
+      ];
+
+      for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = `${Math.random() * 100}%`;
+        balloon.style.animationDuration = `${
+          Math.random() * 10 + 5
+        }s`;
+        balloon.style.background =
+          colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.opacity = Math.random() * 0.7 + 0.3;
+        balloonsContainer.appendChild(balloon);
+      }
+
+      // Create stars
+      const starsContainer =
+        document.getElementById("stars-container");
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        starsContainer.appendChild(star);
+      }
+
+      // Slideshow functionality
+      let slideIndex = 1;
+      let slideInterval;
+
+      function showSlide(n) {
+        const slides = document.getElementsByClassName("slides");
+        const dots = document.getElementsByClassName("dot");
+
+        if (n > slides.length) {
+          slideIndex = 1;
+        }
+        if (n < 1) {
+          slideIndex = slides.length;
+        }
+
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("active");
+        }
+
+        for (let i = 0; i < dots.length; i++) {
+          dots[i].classList.remove("active");
+        }
+
+        slides[slideIndex - 1].classList.add("active");
+        dots[slideIndex - 1].classList.add("active");
+      }
+
+      function changeSlide(n) {
+        clearInterval(slideInterval);
+        slideIndex += n;
+        showSlide(slideIndex);
+        startAutoSlide();
+      }
+
+      function currentSlide(n) {
+        clearInterval(slideInterval);
+        slideIndex = n;
+        showSlide(slideIndex);
+        startAutoSlide();
+      }
+
+      function nextSlide() {
+        slideIndex++;
+        showSlide(slideIndex);
+      }
+
+      function startAutoSlide() {
+        slideInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
+      }
+
+      // Start automatic slideshow
+      startAutoSlide();
+
+      // Add smooth scroll behavior for better UX
+      document.documentElement.style.scrollBehavior = "smooth";
+
+      // Add entrance animations on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = "running";
+          }
+        });
+      }, observerOptions);
+
+      // Observe elements for scroll animations
+      document.addEventListener("DOMContentLoaded", () => {
+        const animatedElements = document.querySelectorAll(
+          ".video-container, .playlist, .summer-scenes, .message"
+        );
+        animatedElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>
